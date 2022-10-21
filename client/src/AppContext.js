@@ -20,6 +20,46 @@ export const AppProvider = ({ children }) => {
 		"form-secondary-title": "",
 	});
 
+	const [formResponse, setformResponse] = useState({ formId: "", answers: [] });
+
+	// set form response Id
+	const setformResponseId = (formId) => {
+		setformResponse({ ...formResponse, formId });
+	};
+
+	// add form answer to state
+	const addFormResponseAnswer = (answer, questionType) => {
+		if (questionType !== "checkboxes") {
+			const existingAnswer = formResponse.answers.find(
+				(answerBody) => answerBody.questionId === answer.questionId
+			);
+			if (existingAnswer) {
+				const updatedAnswers = formResponse.answers.map((answerBody) =>
+					answerBody.questionId !== answer.questionId ? answerBody : answer
+				);
+				setformResponse({
+					...formResponse,
+					answers: updatedAnswers,
+				});
+				return;
+			}
+		}
+		setformResponse({
+			...formResponse,
+			answers: [...formResponse.answers, answer],
+		});
+	};
+	// remove form answer to state
+	const removeFormResponseAnswer = (answerData) => {
+		const updatedAnswers = formResponse.answers.filter(
+			(answerBody) => answerBody.answer !== answerData.answer
+		);
+		setformResponse({
+			...formResponse,
+			answers: updatedAnswers,
+		});
+	};
+
 	/*
 	form format:-
 		{
@@ -251,6 +291,9 @@ export const AppProvider = ({ children }) => {
 		updateFormColors,
 		updateFormDescription,
 		updateFormSecondaryTitle,
+		addFormResponseAnswer,
+		removeFormResponseAnswer,
+		setformResponseId,
 	};
 
 	// return children wrapped in the context provider

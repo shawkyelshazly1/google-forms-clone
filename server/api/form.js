@@ -1,14 +1,15 @@
-const FormService = require("../services/formService");
+const { FormService, FormResponseService } = require("../services");
 const userAuth = require("./middlewares/auth");
 
 module.exports = (app) => {
 	const service = new FormService();
+	const formResponseService = new FormResponseService();
 
 	// Create Form  /* working */
 	app.post("/form/create", userAuth, async (req, res, next) => {
 		const { _id } = req.user;
 		const { formData } = req.body;
-	
+
 		if (!formData) {
 			return res.status(409).json({ error: "Form data is required!" });
 		}
@@ -38,7 +39,6 @@ module.exports = (app) => {
 		const { _id } = req.user;
 		const { id } = req.params;
 		const { formData } = req.body;
-
 
 		if (!formData) {
 			return res.status(409).json({ error: "Form data is required!" });
@@ -86,6 +86,35 @@ module.exports = (app) => {
 		const { _id } = req.user;
 
 		const data = await service.getUserForms(_id);
+
+		if (data.error) {
+			return res.status(409).json({ error: data.error });
+		}
+		return res.status(200).json(data.data);
+	});
+
+	// submit form response
+	app.post("/form/:id/response", async (req, res, next) => {
+		const { formResponseData } = req.body;
+
+		if (!formResponseData) {
+			return res.status(409).json({ error: "Form response data is required!" });
+		}
+
+		const data = await formResponseService.addFormResponse(formResponseData);
+
+		if (data.error) {
+			return res.status(409).json({ error: data.error });
+		}
+		return res.status(200).json(data.data);
+	});
+
+	// load form responses
+	app.get("/form/:id/responses", userAuth, async (req, res, next) => {
+		const { _id } = req.user;
+		const { id } = req.params;
+
+		const data = await formResponseService.getFormResponses(_id, id);
 
 		if (data.error) {
 			return res.status(409).json({ error: data.error });

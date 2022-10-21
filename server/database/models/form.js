@@ -25,7 +25,7 @@ const formSchema = mongoose.Schema(
 		],
 		owner: { type: mongoose.Types.ObjectId, ref: "user", required: true },
 	},
-	{ timeStamps: true }
+	{ timestamps: true }
 );
 
 module.exports = mongoose.model("Form", formSchema);
