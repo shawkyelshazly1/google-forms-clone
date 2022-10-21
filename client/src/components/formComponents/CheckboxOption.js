@@ -19,8 +19,8 @@ export default function CheckboxOption({ option }) {
 			<input
 				className="w-5 h-5"
 				type="checkbox"
-				id={optionDetails.id}
-				name={optionDetails.id}
+				id={optionDetails._id}
+				name={optionDetails._id}
 				value={optionDetails.title}
 				disabled
 			/>
@@ -29,7 +29,7 @@ export default function CheckboxOption({ option }) {
 				type="text"
 				placeholder={optionDetails.placeholder}
 				name="title"
-				id={optionDetails.id}
+				id={optionDetails._id}
 				onChange={handleChange}
 				onBlur={() => {
 					console.log(option);
@@ -39,7 +39,8 @@ export default function CheckboxOption({ option }) {
 			/>
 			<button
 				onClick={() => {
-					removeOption(option.questionId, option.id);
+					console.log(option.questionId, option._id);
+					removeOption(option.questionId, option._id);
 				}}
 				className=" font-bold text-white rounded-full px-2 bg-red-500"
 			>

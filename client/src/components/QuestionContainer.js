@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Select from "react-select";
 import api from "../api";
@@ -11,6 +11,10 @@ export default function QuestionContainer({ question }) {
 	// setting remove function from main app context
 	const { removeQuestion, updateQuestionTitle, updateQuestionType, form } =
 		useContext(AppContext);
+
+	useEffect(() => {
+		console.log(form);
+	}, [form]);
 
 	// Access the client
 	const queryClient = useQueryClient();
@@ -93,7 +97,7 @@ export default function QuestionContainer({ question }) {
 					type="text"
 					onInput={handleTitleChange}
 					onBlur={() => {
-						updateQuestionTitle(question._id || question.id, questionTitle);
+						updateQuestionTitle(question._id, questionTitle);
 					}}
 					onFocus={(e) => {
 						e.target.textContent = questionTitle;
@@ -113,7 +117,7 @@ export default function QuestionContainer({ question }) {
 				/>
 				<button
 					onClick={() => {
-						removeQuestion(question._id || question.id);
+						removeQuestion(question._id);
 						updateForm.mutate({ formData: form });
 					}}
 					className="bg-red-400 w-fit py-2 px-4 rounded-lg text-sm text-white font-semibold"
