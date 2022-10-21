@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const formSchema = mongoose.Schema(
 	{
 		_id: { type: String, required: true },
-		"form-title": { type: String, required: true },
+		"form-title": { type: String, question: "" },
 		questions: [
 			{
 				_id: { type: String, required: true },

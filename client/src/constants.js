@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+
 
 // setting questions options
 export const questionTypes = [
@@ -15,10 +15,4 @@ export const questionsMap = {
 	"multiple-choice": { value: "multiple-choice", label: "Multiple Choice" },
 };
 
-export const defaultForm = {
-	formData: {
-		_id: uuidv4(),
-		"form-title": "untitled Form",
-		questions: [],
-	},
-};
+

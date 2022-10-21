@@ -1,28 +1,25 @@
-import {
-	QueryClient,
-	useMutation,
-	useQuery,
-	useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { v4 as uuidv4 } from "uuid";
 import React from "react";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import api from "../api";
 import FormCard from "../components/FormCard";
 import HomeNav from "../components/HomeNav";
-import { defaultForm } from "../constants";
 
 export default function Home() {
 	const navigate = useNavigate();
+
+	const defaultForm = {
+		_id: uuidv4(),
+		"form-title": "",
+		questions: [],
+	};
 
 	// Access the client
 	const queryClient = useQueryClient();
 
 	// Queries forms
-	const {
-		data: forms,
-		isLoading,
-		error,
-	} = useQuery(
+	const { data: forms, isLoading } = useQuery(
 		["forms"],
 		() => {
 			return api.get("/form/all", {}).then((res) => {
@@ -59,7 +56,7 @@ export default function Home() {
 
 				<button
 					onClick={() => {
-						addForm.mutate(defaultForm);
+						addForm.mutate({ formData: defaultForm });
 					}}
 					className="flex py-5 px-4 flex-col items-center justify-center rounded-lg bg-gray-200 border-2 border-gray-300 hover:border-blue-400 cursor-pointer"
 				>

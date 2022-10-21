@@ -12,8 +12,7 @@ export default function Builder() {
 	const navigate = useNavigate();
 
 	const { id } = useParams();
-	const { questions, addQuestion, setForm, setQuestions } =
-		useContext(AppContext);
+	const { addQuestion, setForm, form } = useContext(AppContext);
 
 	// Queries form
 	const { data, isLoading, error } = useQuery(
@@ -26,7 +25,6 @@ export default function Builder() {
 		{
 			onSuccess: (data) => {
 				setForm(data);
-				setQuestions(data.questions);
 			},
 			onError: (error) => {
 				navigate("/404");
@@ -48,7 +46,7 @@ export default function Builder() {
 						Add Question
 					</button>
 					<div className="flex  flex-col gap-4 form-container items-center py-4 w-fit">
-						{questions.map((question) => (
+						{form.questions.map((question) => (
 							<QuestionContainer
 								key={question._id || question._id}
 								question={question}

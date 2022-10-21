@@ -13,9 +13,13 @@ export default function FormCard({ form }) {
 				</div>
 				<div className="bg-white w-full py-4 px-4">
 					{" "}
-					<h1 className="font-semibold text-sm">{form["form-title"]}</h1>
+					<h1 className="font-semibold text-sm">
+						{form["form-title"] === "" ? "Untitled Form" : form["form-title"]}
+					</h1>
 				</div>
 			</Link>
 		</div>
 	);
 }
+//2c0f651f-1019-4277-9a73-1e83a9a088da
+//2c0f651f-1019-4277-9a73-1e83a9a088da

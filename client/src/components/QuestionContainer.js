@@ -12,10 +12,6 @@ export default function QuestionContainer({ question }) {
 	const { removeQuestion, updateQuestionTitle, updateQuestionType, form } =
 		useContext(AppContext);
 
-	useEffect(() => {
-		console.log(form);
-	}, [form]);
-
 	// Access the client
 	const queryClient = useQueryClient();
 
@@ -40,56 +36,8 @@ export default function QuestionContainer({ question }) {
 		setQuestionTitle(e.target.textContent);
 	};
 
-	// update form and save on changes
-	const updateForm = useMutation(
-		({ formData }) => {
-			return api.put(`/form/${form._id}`, { formData }).then((res) => {
-				return res.data;
-			});
-		},
-		{
-			onSuccess: (data) => {
-				if (data) {
-					queryClient.setQueryData(["edit-form"], data);
-					toast.success("Form Saved!");
-				}
-			},
-			onError: (error) => {
-				if (error) {
-					switch (error.code) {
-						case "ERR_NETWORK":
-							toast.error(
-								"Either server is down or check internet connection."
-							);
-							toast(
-								"Form Saved locally and will be updated once connection restored.",
-								{
-									icon: "👏",
-								}
-							);
-							break;
-						case "ERR_BAD_REQUEST":
-							toast.error("Something went wrong!, please try again.");
-							break;
-
-						default:
-							toast.error("Something Went Wrong!");
-							break;
-					}
-				}
-			},
-		}
-	);
-
 	return (
-		<div
-			className="h-fit w-full flex flex-row bg-gray-100 rounded-lg p-4 gap-4 min-w-[700px] shadow-md"
-			onBlur={(e) => {
-				if (!e.currentTarget.contains(e.relatedTarget)) {
-					updateForm.mutate({ formData: form });
-				}
-			}}
-		>
+		<div className="h-fit w-full flex flex-row bg-gray-100 rounded-lg p-4 gap-4 min-w-[700px] shadow-md">
 			<div className="flex-1 flex flex-col">
 				<div
 					data-ph={questionTitle === "" ? "Question" : questionTitle}
@@ -118,7 +66,7 @@ export default function QuestionContainer({ question }) {
 				<button
 					onClick={() => {
 						removeQuestion(question._id);
-						updateForm.mutate({ formData: form });
+						
 					}}
 					className="bg-red-400 w-fit py-2 px-4 rounded-lg text-sm text-white font-semibold"
 				>

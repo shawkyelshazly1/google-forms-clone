@@ -1,17 +1,18 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
+import api from "./api";
 
 // app context
 export const AppContext = createContext();
 
 // app context provider to wrap the app
 export const AppProvider = ({ children }) => {
-	const [questions, setQuestions] = useState([]);
-	const [form, setForm] = useState({ "form-title": "", questions });
+	// Access the client
+	const queryClient = useQueryClient();
 
-	useEffect(() => {
-		setForm({ ...form, questions });
-	}, [questions]);
+	const [form, setForm] = useState({ "form-title": "", questions: [] });
 
 	/*
 	form format:-
@@ -51,47 +52,48 @@ export const AppProvider = ({ children }) => {
 
 	// update form title
 	const updateFormTitle = (title) => {
-		setForm({ ...form, "form-title": title });
+		const updatedForm = { ...form, "form-title": title };
+		pushFormUpdate(updatedForm);
 	};
 
 	// update question title
 	const updateQuestionType = (questionId, type) => {
-		const updatedQuestions = questions.map((question) =>
+		const updatedQuestions = form.questions.map((question) =>
 			question._id !== questionId
 				? question
 				: { ...question, "question-type": type, options: [] }
 		);
-		setQuestions(updatedQuestions);
-		setForm({ ...form, questions: updatedQuestions });
+
+		const updatedForm = { ...form, questions: updatedQuestions };
+		pushFormUpdate(updatedForm);
 	};
 
 	// update question type
 	const updateQuestionTitle = (questionId, title) => {
-		const updatedQuestions = questions.map((question) =>
+		const updatedQuestions = form.questions.map((question) =>
 			(question._id || question._id) !== questionId
 				? question
 				: { ...question, "question-title": title }
 		);
-		setQuestions(updatedQuestions);
-		setForm({ ...form, questions: updatedQuestions });
+
+		const updatedForm = { ...form, questions: updatedQuestions };
+		pushFormUpdate(updatedForm);
 	};
 
 	// add options to question
 	const addOption = (questionId, option) => {
-		console.log(questionId);
-		const updatedQuestions = questions.map((question) =>
+		const updatedQuestions = form.questions.map((question) =>
 			question._id !== questionId
 				? question
 				: { ...question, options: [...question.options, option] }
 		);
-		setQuestions(updatedQuestions);
-		setForm({ ...form, questions: updatedQuestions });
+		const updatedForm = { ...form, questions: updatedQuestions };
+		pushFormUpdate(updatedForm);
 	};
 
 	// update Option
 	const updateOption = (questionId, updatedOption) => {
-		console.log(questionId);
-		const updatedQuestions = questions.map((question) =>
+		const updatedQuestions = form.questions.map((question) =>
 			question._id !== questionId
 				? question
 				: {
@@ -103,13 +105,13 @@ export const AppProvider = ({ children }) => {
 						),
 				  }
 		);
-		setQuestions(updatedQuestions);
-		setForm({ ...form, questions: updatedQuestions });
+		const updatedForm = { ...form, questions: updatedQuestions };
+		pushFormUpdate(updatedForm);
 	};
 
 	// remove option from question
 	const removeOption = (questionId, optionId) => {
-		const updatedQuestions = questions.map((question) =>
+		const updatedQuestions = form.questions.map((question) =>
 			question._id !== questionId
 				? question
 				: {
@@ -119,11 +121,13 @@ export const AppProvider = ({ children }) => {
 						),
 				  }
 		);
-		setQuestions(updateOptionsPlaceholders(updatedQuestions, questionId));
-		setForm({
+
+		const updatedForm = {
 			...form,
 			questions: updateOptionsPlaceholders(updatedQuestions, questionId),
-		});
+		};
+
+		pushFormUpdate(updatedForm);
 	};
 
 	// update options placeholders
@@ -145,24 +149,67 @@ export const AppProvider = ({ children }) => {
 
 	// remove question
 	const removeQuestion = (questionId) => {
-		const updatedQuestions = questions.filter(
+		const updatedQuestions = form.questions.filter(
 			(question) => question._id !== questionId
 		);
+		const updatedForm = { ...form, questions: updatedQuestions };
 
-		setQuestions(updatedQuestions);
-		setForm({ ...form, questions: updatedQuestions || [] });
+		pushFormUpdate(updatedForm);
 	};
 
 	// add question
 	const addQuestion = () => {
-		setQuestions([...questions, defaultQuestion]);
-		setForm({ ...form, questions: [...questions, defaultQuestion] });
+		const updatedForm = {
+			...form,
+			questions: [...form.questions, defaultQuestion],
+		};
+		pushFormUpdate(updatedForm);
 	};
+
+	// update & publish
+	const pushFormUpdate = (updatedForm) => {
+		setForm(updatedForm);
+		// updateForm.mutate({ formData: updatedForm });
+		toast.promise(
+			updateForm.mutateAsync({ formData: updatedForm }),
+			{
+				loading: "Saving...",
+				success: <b>Form saved!</b>,
+				error: <b>Could not save.</b>,
+			},
+			{ success: { duration: 500 }, position: "bottom-right" }
+		);
+	};
+
+	// update form and save on changes
+	const updateForm = useMutation(
+		({ formData }) => {
+			return api.put(`/form/${form._id}`, { formData }).then((res) => {
+				return res.data;
+			});
+		},
+		{
+			onSuccess: (data) => {
+				if (data) {
+					queryClient.setQueryData(["edit-form"], data);
+					queryClient.setQueryData(["forms"], (forms) => {
+						const updatedForms = forms.map((form) =>
+							form._id !== data._id ? form : data
+						);
+						return [...updatedForms];
+					});
+				}
+			},
+			onError: (error) => {
+				if (error) {
+					console.error(error);
+				}
+			},
+		}
+	);
 
 	// context state values and functions
 	const stateValues = {
-		questions,
-		setQuestions,
 		addOption,
 		removeOption,
 		removeQuestion,
