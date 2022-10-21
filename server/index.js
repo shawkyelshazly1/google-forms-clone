@@ -1,7 +1,7 @@
 const express = require("express"),
 	cors = require("cors"),
 	{ initDatabaseConnection } = require("./database"),
-	{ UserAPI } = require("./api");
+	{ UserAPI, FormAPI } = require("./api");
 
 require("dotenv").config();
 
@@ -15,7 +15,9 @@ app.use(express.json());
 // connect DB
 initDatabaseConnection();
 
+// register service routes
 UserAPI(app);
+FormAPI(app);
 
 // start sever
 app.listen(process.env.PORT || 5000, () => {

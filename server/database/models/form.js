@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const formSchema = mongoose.Schema(
 	{
-		title: { type: String, required: true },
+		"form-title": { type: String, required: true },
 		questions: [
 			{
 				"question-title": { type: String, required: true },
