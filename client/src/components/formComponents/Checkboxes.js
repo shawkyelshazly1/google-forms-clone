@@ -5,9 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 
 export default function Checkboxes({ question }) {
 	const { addOption } = useContext(AppContext);
-
 	const defaultOption = {
-		questionId: question._id,
+		questionId: question._id || question.id,
 		id: uuidv4(),
 		title: "",
 		placeholder: `Option ${question.options.length + 1}`,

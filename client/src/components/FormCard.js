@@ -3,8 +3,11 @@ import { FcDocument } from "react-icons/fc";
 import { Link } from "react-router-dom";
 export default function FormCard({ form }) {
 	return (
-		<Link to={`/${form._id}/edit`}>
-			<div className="flex flex-col items-center rounded-lg bg-gray-200 border-2 border-gray-300 hover:border-blue-400 cursor-pointer">
+		<div className=" col-span-1 row-span-1">
+			<Link
+				to={`/${form._id}/edit`}
+				className="flex flex-col items-center h-fit rounded-lg bg-gray-200 border-2 border-gray-300 hover:border-blue-400 cursor-pointer"
+			>
 				<div className="flex items-center justify-center py-2">
 					<FcDocument size={"4em"} />
 				</div>
@@ -12,7 +15,7 @@ export default function FormCard({ form }) {
 					{" "}
 					<h1 className="font-semibold text-sm">{form["form-title"]}</h1>
 				</div>
-			</div>
-		</Link>
+			</Link>
+		</div>
 	);
 }

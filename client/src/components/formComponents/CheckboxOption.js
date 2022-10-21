@@ -32,13 +32,13 @@ export default function CheckboxOption({ option }) {
 				id={optionDetails.id}
 				onChange={handleChange}
 				onBlur={() => {
+					console.log(option);
 					updateOption(option.questionId, optionDetails);
 				}}
 				className="bg-[#F3F4F6] focus:py-0 focus:my-0 focus:outline-none focus:border-b-2 px-2 text-lg"
 			/>
 			<button
 				onClick={() => {
-					console.log(option.id);
 					removeOption(option.questionId, option.id);
 				}}
 				className=" font-bold text-white rounded-full px-2 bg-red-500"

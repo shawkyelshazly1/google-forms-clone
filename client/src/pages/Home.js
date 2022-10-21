@@ -48,9 +48,9 @@ export default function Home() {
 	);
 
 	return (
-		<div className="flex w-full h-full flex-col items-center pb-4">
+		<div className="flex w-full h-fit flex-col items-center pb-4">
 			<HomeNav />
-			<div className="pt-24 px-4 grid grid-cols-4 gap-8 w-2/4">
+			<div className="pt-24 px-4 grid grid-cols-4  gap-8 w-2/4 h-fit  gap-y-4">
 				{isLoading ? (
 					<>Loading....</>
 				) : (
@@ -61,7 +61,7 @@ export default function Home() {
 					onClick={() => {
 						addForm.mutate(defaultForm);
 					}}
-					className="flex flex-col items-center justify-center rounded-lg bg-gray-200 border-2 border-gray-300 hover:border-blue-400 cursor-pointer"
+					className="flex py-5 px-4 flex-col items-center justify-center rounded-lg bg-gray-200 border-2 border-gray-300 hover:border-blue-400 cursor-pointer"
 				>
 					<span className="text-4xl font-semibold">+</span>
 					<h1 className="text-xl font-semibold">Create New Form</h1>

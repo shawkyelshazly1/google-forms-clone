@@ -18,14 +18,22 @@ export default function Login() {
 	const handleLoginFormSubmission = (e) => {
 		e.preventDefault();
 
-		api.post("/user/login", formData).then((res) => {
-			if (res.status === 200) {
-				setCurrentUser(res.data.user);
-				setAccessToken(res.data.token);
-				axios.defaults.headers.authorization = `Bearer ${res.data.token}`;
-				navigate("/");
-			}
-		});
+		api
+			.post("/user/login", formData)
+			.then((res) => {
+				if (res.status === 200) {
+					setCurrentUser(res.data.user);
+					setAccessToken(res.data.token);
+					axios.defaults.headers.authorization = `Bearer ${res.data.token}`;
+					toast.success("Logged In!");
+					navigate("/");
+				}
+			})
+			.catch((error) => {
+				toast.error(`${error.response.data.error}`, {
+					position: "bottom-center",
+				});
+			});
 	};
 
 	return (

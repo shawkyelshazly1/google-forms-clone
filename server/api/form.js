@@ -38,6 +38,7 @@ module.exports = (app) => {
 		const { _id } = req.user;
 		const { id } = req.params;
 		const { formData } = req.body;
+		console.log(formData);
 
 		if (!formData) {
 			return res.status(409).json({ error: "Form data is required!" });
@@ -58,8 +59,7 @@ module.exports = (app) => {
 
 		const data = await service.getForm(id);
 
-		console.log(data.data.owner.toString() !== _id);
-		if (data.data.owner.toString() !== _id) {
+		if (data.data && data.data.owner.toString() !== _id) {
 			return res.status(409).json({ error: "Not Authorized!" });
 		}
 

@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { CurrentUserContext } from "../CurrentUserContext";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../api";
+import toast from "react-hot-toast";
 
 export default function Register() {
 	const navigate = useNavigate();
@@ -18,13 +19,21 @@ export default function Register() {
 	const handleRegisterFormSubmission = (e) => {
 		e.preventDefault();
 
-		api.post("/user/register", formData).then((res) => {
-			if (res.status === 200) {
-				navigate("/login");
-			} else {
-				console.log(res);
-			}
-		});
+		api
+			.post("/user/register", formData)
+			.then((res) => {
+				if (res.status === 200) {
+					toast.success("Registered Successfully!, Redirecting to Login.");
+					navigate("/login");
+				} else {
+					console.log(res);
+				}
+			})
+			.catch((error) => {
+				toast.error(`${error.response.data.error}`, {
+					position: "bottom-center",
+				});
+			});
 	};
 
 	const { currentUser, authLoading } = useContext(CurrentUserContext);

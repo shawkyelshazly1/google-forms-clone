@@ -11,7 +11,7 @@ export const AppProvider = ({ children }) => {
 
 	useEffect(() => {
 		setForm({ ...form, questions });
-	}, [questions]);
+	}, []);
 
 	/*
 	form format:-
@@ -43,7 +43,7 @@ export const AppProvider = ({ children }) => {
 
 	// default question structure
 	const defaultQuestion = {
-		_id: uuidv4(),
+		id: uuidv4(),
 		"question-type": "short-input",
 		"question-title": "",
 		options: [],
@@ -62,42 +62,49 @@ export const AppProvider = ({ children }) => {
 				: { ...question, "question-type": type, options: [] }
 		);
 		setQuestions(updatedQuestions);
+		setForm({ ...form, questions: updatedQuestions });
 	};
 
 	// update question type
 	const updateQuestionTitle = (questionId, title) => {
 		const updatedQuestions = questions.map((question) =>
-			question._id !== questionId
+			(question._id || question.id) !== questionId
 				? question
 				: { ...question, "question-title": title }
 		);
 		setQuestions(updatedQuestions);
+		setForm({ ...form, questions: updatedQuestions });
 	};
 
 	// add options to question
 	const addOption = (questionId, option) => {
+		console.log(questionId);
 		const updatedQuestions = questions.map((question) =>
 			question._id !== questionId
 				? question
 				: { ...question, options: [...question.options, option] }
 		);
 		setQuestions(updatedQuestions);
+		setForm({ ...form, questions: updatedQuestions });
 	};
 
 	// update Option
 	const updateOption = (questionId, updatedOption) => {
-		console.log(questionId, updatedOption);
+		console.log(questionId);
 		const updatedQuestions = questions.map((question) =>
 			question._id !== questionId
 				? question
 				: {
 						...question,
 						options: question.options.map((option) =>
-							option.id !== updatedOption.id ? option : updatedOption
+							(option.id || option._id) !== updatedOption.id
+								? option
+								: updatedOption
 						),
 				  }
 		);
 		setQuestions(updatedQuestions);
+		setForm({ ...form, questions: updatedQuestions });
 	};
 
 	// remove option from question
@@ -108,11 +115,15 @@ export const AppProvider = ({ children }) => {
 				: {
 						...question,
 						options: question.options.filter(
-							(option) => option.id !== optionId
+							(option) => (option.id || option._id) !== optionId
 						),
 				  }
 		);
 		setQuestions(updateOptionsPlaceholders(updatedQuestions, questionId));
+		setForm({
+			...form,
+			questions: updateOptionsPlaceholders(updatedQuestions, questionId),
+		});
 	};
 
 	// update options placeholders
@@ -138,11 +149,14 @@ export const AppProvider = ({ children }) => {
 			(question) => question._id !== questionId
 		);
 		setQuestions(updatedQuestions);
+		setForm({ ...form, questions: updatedQuestions });
+		console.log(form);
 	};
 
 	// add question
 	const addQuestion = () => {
 		setQuestions([...questions, defaultQuestion]);
+		setForm({ ...form, questions: [...questions, defaultQuestion] });
 	};
 
 	// context state values and functions

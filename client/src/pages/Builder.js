@@ -32,6 +32,7 @@ export default function Builder() {
 				navigate("/404");
 			},
 			retry: false,
+			refetchOnWindowFocus: false,
 		}
 	);
 
@@ -48,7 +49,10 @@ export default function Builder() {
 					</button>
 					<div className="flex  flex-col gap-4 form-container items-center py-4 w-fit">
 						{questions.map((question) => (
-							<QuestionContainer key={question._id} question={question} />
+							<QuestionContainer
+								key={question._id || question.id}
+								question={question}
+							/>
 						))}
 					</div>
 				</div>
