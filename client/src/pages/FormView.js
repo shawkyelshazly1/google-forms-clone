@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import api from "../api";
 import { AppContext } from "../AppContext";
@@ -7,9 +7,14 @@ import { colorPallete } from "../constants";
 import QuestionContainerView from "../formViewComponents/QuestionContainerView";
 
 export default function FormView() {
-	const { setformResponseId } = useContext(AppContext);
+	const { setformResponseId, formResponse, setformResponse } =
+		useContext(AppContext);
 	const { id } = useParams();
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		setformResponse({ ...formResponse, answers: [] });
+	}, []);
 
 	// Queries form
 	const {
@@ -38,6 +43,8 @@ export default function FormView() {
 	// handle submitting form response
 	const handleFormSubmittion = (e) => {
 		e.preventDefault();
+		console.log(formResponse);
+		navigate(`/${id}/formResponse`);
 	};
 
 	if (isLoading) return <>Loading...</>;
@@ -58,7 +65,15 @@ export default function FormView() {
 					</div>
 					<div className="flex flex-col gap-4 py-4 px-6">
 						<h1 className="font-semibold text-black text-4xl">
-							{form["form-secondary-title"]}
+							{!form["form-secondary-title"] === "" ? (
+								form["form-secondary-title"]
+							) : (
+								<>
+									{!form["form-title"] === ""
+										? form["form-title"]
+										: "Untitled Form"}
+								</>
+							)}
 						</h1>
 						<hr />
 						<p className="text-base font-medium">{form["form-description"]}</p>
@@ -82,7 +97,10 @@ export default function FormView() {
 							Submit
 						</button>
 						<span
-							className="font-medium text-base mr-1"
+							onClick={() => {
+								window.location.reload();
+							}}
+							className="font-medium text-base mr-1 cursor-pointer"
 							style={{
 								color: `${colorPallete[form["form-color"]].main}`,
 							}}

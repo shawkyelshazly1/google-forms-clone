@@ -7,6 +7,7 @@ import FormView from "./pages/FormView";
 import PrivateRouter from "./pages/PrivateRouter";
 import NotFound from "./pages/NotFound";
 import { Toaster } from "react-hot-toast";
+import FormResponseSuccess from "./pages/FormResponseSuccess";
 
 export default function RoutesProvider() {
 	return (
@@ -23,6 +24,10 @@ export default function RoutesProvider() {
 										<Route path="/" element={<Home />} />
 										<Route path="/:id/edit" element={<Builder />} />
 										<Route path="/:id/view" element={<FormView />} />
+										<Route
+											path="/:id/formResponse"
+											element={<FormResponseSuccess />}
+										/>
 									</Routes>
 								</PrivateRouter>
 							</>

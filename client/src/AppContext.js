@@ -294,6 +294,8 @@ export const AppProvider = ({ children }) => {
 		addFormResponseAnswer,
 		removeFormResponseAnswer,
 		setformResponseId,
+		setformResponse,
+		formResponse,
 	};
 
 	// return children wrapped in the context provider
