@@ -16,7 +16,7 @@ module.exports = (app) => {
 		if (data.error) {
 			return res.status(409).json({ error: data.error });
 		}
-		return res.status(200).json({ data });
+		return res.status(200).json(data.data);
 	});
 
 	//register Route
@@ -35,7 +35,7 @@ module.exports = (app) => {
 		if (data.error) {
 			return res.status(409).json({ error: data.error });
 		}
-		return res.status(200).json({ data });
+		return res.status(200).json({ msg: "Registered Success" });
 	});
 
 	//auth route
@@ -45,6 +45,6 @@ module.exports = (app) => {
 		if (data.error) {
 			return res.status(409).json({ error: data.error });
 		}
-		return res.status(200).json({ data });
+		return res.status(200).json(data.data);
 	});
 };
