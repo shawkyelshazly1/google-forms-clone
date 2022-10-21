@@ -1,10 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FcDocument } from "react-icons/fc";
 import { AppContext } from "../AppContext";
 export default function Nav() {
 	const { form, updateFormTitle } = useContext(AppContext);
 	// title state
-	const [questionTitle, setQuestionTitle] = useState(form.title);
+	const [questionTitle, setQuestionTitle] = useState(form["form-title"]);
+
+	useEffect(() => {
+		setQuestionTitle(form["form-title"]);
+	}, [form]);
 
 	// handle change form title
 	const handleChange = (e) => {

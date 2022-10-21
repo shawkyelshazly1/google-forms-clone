@@ -19,7 +19,7 @@ export default function MultipleChoiceOption({ option }) {
 			<input
 				className="w-5 h-5"
 				type="radio"
-				id={optionDetails.id}
+				id={optionDetails._id}
 				name={option.questionId}
 				value={optionDetails.title}
 			/>
@@ -28,7 +28,7 @@ export default function MultipleChoiceOption({ option }) {
 				type="text"
 				placeholder={optionDetails.placeholder}
 				name="title"
-				id={optionDetails.id}
+				id={optionDetails._id}
 				onChange={handleChange}
 				onBlur={() => {
 					updateOption(option.questionId, optionDetails);
@@ -37,7 +37,7 @@ export default function MultipleChoiceOption({ option }) {
 			/>
 			<button
 				onClick={() => {
-					removeOption(option.questionId, option.id);
+					removeOption(option.questionId, option._id);
 				}}
 				className=" font-bold text-white rounded-full px-2 bg-red-500"
 			>

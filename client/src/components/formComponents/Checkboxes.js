@@ -6,8 +6,8 @@ import { v4 as uuidv4 } from "uuid";
 export default function Checkboxes({ question }) {
 	const { addOption } = useContext(AppContext);
 	const defaultOption = {
-		questionId: question._id || question.id,
-		id: uuidv4(),
+		questionId: question._id,
+		_id: uuidv4(),
 		title: "",
 		placeholder: `Option ${question.options.length + 1}`,
 	};
@@ -15,7 +15,7 @@ export default function Checkboxes({ question }) {
 	return (
 		<div className="flex flex-col gap-2 p-3 w-full ">
 			{question.options.map((option) => (
-				<CheckboxOption option={option} key={option.id || option._id} />
+				<CheckboxOption option={option} key={option._id} />
 			))}
 			<button
 				onClick={() => {

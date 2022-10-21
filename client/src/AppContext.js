@@ -11,7 +11,7 @@ export const AppProvider = ({ children }) => {
 
 	useEffect(() => {
 		setForm({ ...form, questions });
-	}, []);
+	}, [questions]);
 
 	/*
 	form format:-
@@ -43,7 +43,7 @@ export const AppProvider = ({ children }) => {
 
 	// default question structure
 	const defaultQuestion = {
-		id: uuidv4(),
+		_id: uuidv4(),
 		"question-type": "short-input",
 		"question-title": "",
 		options: [],
@@ -51,7 +51,7 @@ export const AppProvider = ({ children }) => {
 
 	// update form title
 	const updateFormTitle = (title) => {
-		setForm({ ...form, title });
+		setForm({ ...form, "form-title": title });
 	};
 
 	// update question title
@@ -68,7 +68,7 @@ export const AppProvider = ({ children }) => {
 	// update question type
 	const updateQuestionTitle = (questionId, title) => {
 		const updatedQuestions = questions.map((question) =>
-			(question._id || question.id) !== questionId
+			(question._id || question._id) !== questionId
 				? question
 				: { ...question, "question-title": title }
 		);
@@ -97,7 +97,7 @@ export const AppProvider = ({ children }) => {
 				: {
 						...question,
 						options: question.options.map((option) =>
-							(option.id || option._id) !== updatedOption.id
+							(option._id || option._id) !== updatedOption._id
 								? option
 								: updatedOption
 						),
@@ -115,7 +115,7 @@ export const AppProvider = ({ children }) => {
 				: {
 						...question,
 						options: question.options.filter(
-							(option) => (option.id || option._id) !== optionId
+							(option) => (option._id || option._id) !== optionId
 						),
 				  }
 		);
@@ -148,9 +148,9 @@ export const AppProvider = ({ children }) => {
 		const updatedQuestions = questions.filter(
 			(question) => question._id !== questionId
 		);
+
 		setQuestions(updatedQuestions);
-		setForm({ ...form, questions: updatedQuestions });
-		console.log(form);
+		setForm({ ...form, questions: updatedQuestions || [] });
 	};
 
 	// add question

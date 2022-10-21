@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 // setting questions options
 export const questionTypes = [
 	{ value: "short-input", label: "Short Input" },
@@ -15,6 +17,7 @@ export const questionsMap = {
 
 export const defaultForm = {
 	formData: {
+		_id: uuidv4(),
 		"form-title": "untitled Form",
 		questions: [],
 	},

@@ -50,7 +50,7 @@ export default function Builder() {
 					<div className="flex  flex-col gap-4 form-container items-center py-4 w-fit">
 						{questions.map((question) => (
 							<QuestionContainer
-								key={question._id || question.id}
+								key={question._id || question._id}
 								question={question}
 							/>
 						))}
