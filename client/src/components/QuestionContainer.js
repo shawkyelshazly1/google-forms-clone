@@ -1,10 +1,10 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useContext, useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
+import React, { useContext, useState } from "react";
+
 import Select from "react-select";
-import api from "../api";
+
 import { AppContext } from "../AppContext";
-import { questionsMap, questionTypes } from "../constants";
+import { colorPallete, questionsMap, questionTypes } from "../constants";
 import { selectQuestion } from "../utils";
 
 export default function QuestionContainer({ question }) {
@@ -37,7 +37,7 @@ export default function QuestionContainer({ question }) {
 	};
 
 	return (
-		<div className="h-fit w-full flex flex-row bg-gray-100 rounded-lg p-4 gap-4 min-w-[700px] shadow-md">
+		<div className="h-fit w-full flex flex-row bg-gray-100 rounded-lg p-4 py-6 gap-4 min-w-[700px] shadow-md">
 			<div className="flex-1 flex flex-col">
 				<div
 					data-ph={questionTitle === "" ? "Question" : questionTitle}
@@ -66,9 +66,11 @@ export default function QuestionContainer({ question }) {
 				<button
 					onClick={() => {
 						removeQuestion(question._id);
-						
 					}}
-					className="bg-red-400 w-fit py-2 px-4 rounded-lg text-sm text-white font-semibold"
+					style={{
+						backgroundColor: `${colorPallete[form["form-color"]].main}`,
+					}}
+					className=" w-fit py-2 px-4 rounded-lg text-sm text-white font-semibold"
 				>
 					Delete
 				</button>

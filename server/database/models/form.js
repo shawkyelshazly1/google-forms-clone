@@ -3,7 +3,10 @@ const mongoose = require("mongoose");
 const formSchema = mongoose.Schema(
 	{
 		_id: { type: String, required: true },
-		"form-title": { type: String, question: "" },
+		"form-title": { type: String, default: "" },
+		"form-color": { type: String, default: "purple" },
+		"form-description": { type: String, default: "" },
+		"form-secondary-title": { type: String, default: "" },
 		questions: [
 			{
 				_id: { type: String, required: true },

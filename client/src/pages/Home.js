@@ -12,6 +12,9 @@ export default function Home() {
 	const defaultForm = {
 		_id: uuidv4(),
 		"form-title": "",
+		"form-color": "purple",
+		"form-description": "",
+		"form-secondary-title": "",
 		questions: [],
 	};
 

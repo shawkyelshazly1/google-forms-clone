@@ -3,9 +3,11 @@ import React, { useContext } from "react";
 import { Navigate, useNavigate, useParams } from "react-router";
 import api from "../api";
 import { AppContext } from "../AppContext";
+import HeaderComponent from "../components/formComponents/HeaderComponent";
 
 import Nav from "../components/Nav";
 import QuestionContainer from "../components/QuestionContainer";
+import { colorPallete } from "../constants";
 import NotFound from "./NotFound";
 
 export default function Builder() {
@@ -35,8 +37,12 @@ export default function Builder() {
 	);
 
 	return (
-		<div className="w-full min-h-screen flex flex-col items-center bg-red-300 pb-4 ">
+		<div
+			className="w-full min-h-screen flex flex-col items-center  pb-4 "
+			style={{ backgroundColor: `${colorPallete[form["form-color"]].bg}` }}
+		>
 			<Nav />
+
 			<div className="pt-24 w-full ">
 				<div className="flex flex-col-reverse  items-center w-full h-full">
 					<button
@@ -46,6 +52,7 @@ export default function Builder() {
 						Add Question
 					</button>
 					<div className="flex  flex-col gap-4 form-container items-center py-4 w-fit">
+						<HeaderComponent />
 						{form.questions.map((question) => (
 							<QuestionContainer
 								key={question._id || question._id}

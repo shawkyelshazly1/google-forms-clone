@@ -12,7 +12,13 @@ export const AppProvider = ({ children }) => {
 	// Access the client
 	const queryClient = useQueryClient();
 
-	const [form, setForm] = useState({ "form-title": "", questions: [] });
+	const [form, setForm] = useState({
+		"form-title": "",
+		questions: [],
+		"form-color": "purple",
+		"form-description": "",
+		"form-secondary-title": "",
+	});
 
 	/*
 	form format:-
@@ -48,6 +54,19 @@ export const AppProvider = ({ children }) => {
 		"question-type": "short-input",
 		"question-title": "",
 		options: [],
+	};
+
+	// update form secondary title
+
+	const updateFormSecondaryTitle = (secondaryTitle) => {
+		const updatedForm = { ...form, "form-secondary-title": secondaryTitle };
+		pushFormUpdate(updatedForm);
+	};
+
+	// update form description
+	const updateFormDescription = (description) => {
+		const updatedForm = { ...form, "form-description": description };
+		pushFormUpdate(updatedForm);
 	};
 
 	// update form title
@@ -166,6 +185,12 @@ export const AppProvider = ({ children }) => {
 		pushFormUpdate(updatedForm);
 	};
 
+	// change form colors
+	const updateFormColors = (color) => {
+		const updatedForm = { ...form, "form-color": color };
+		pushFormUpdate(updatedForm);
+	};
+
 	// update & publish
 	const pushFormUpdate = (updatedForm) => {
 		setForm(updatedForm);
@@ -193,14 +218,17 @@ export const AppProvider = ({ children }) => {
 				if (data) {
 					queryClient.setQueryData(["edit-form"], data);
 					queryClient.setQueryData(["forms"], (forms) => {
-						const updatedForms = forms.map((form) =>
-							form._id !== data._id ? form : data
-						);
-						return [...updatedForms];
+						if (forms) {
+							const updatedForms = forms.map((form) =>
+								form._id !== data._id ? form : data
+							);
+							return [...updatedForms];
+						}
 					});
 				}
 			},
 			onError: (error) => {
+				console.log(error);
 				if (error) {
 					console.error(error);
 				}
@@ -220,6 +248,9 @@ export const AppProvider = ({ children }) => {
 		form,
 		updateFormTitle,
 		setForm,
+		updateFormColors,
+		updateFormDescription,
+		updateFormSecondaryTitle,
 	};
 
 	// return children wrapped in the context provider

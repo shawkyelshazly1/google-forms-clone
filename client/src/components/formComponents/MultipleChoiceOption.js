@@ -22,6 +22,7 @@ export default function MultipleChoiceOption({ option }) {
 				id={optionDetails._id}
 				name={option.questionId}
 				value={optionDetails.title}
+				disabled
 			/>
 			<input
 				value={optionDetails.title}
