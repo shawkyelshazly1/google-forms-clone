@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { createContext, useEffect, useState } from "react";
 import api from "./api";
 // current user context
@@ -5,6 +6,9 @@ export const CurrentUserContext = createContext(null);
 
 // current yser provider as wrapper
 export const CurrentUserProvider = ({ children }) => {
+	// Access the client
+	const queryClient = useQueryClient();
+
 	// initial states
 	const [currentUser, setCurrentUser] = useState();
 	const [authLoading, setAuthLoading] = useState(true);
@@ -21,8 +25,8 @@ export const CurrentUserProvider = ({ children }) => {
 		setAuthLoading(true);
 
 		if (token && token !== "") {
-			api.get("/auth", {}).then((res) => {
-				const { user } = res.data;
+			api.get("/user/auth", {}).then((res) => {
+				const user = res.data;
 				setAuthLoading(false);
 				if (user) {
 					setCurrentUser(user);
@@ -40,6 +44,7 @@ export const CurrentUserProvider = ({ children }) => {
 		//remove token and user
 		localStorage.setItem("accessToken", "");
 		setCurrentUser(null);
+		queryClient.removeQueries();
 	};
 
 	const stateValues = {

@@ -38,6 +38,7 @@ export default function CheckboxOption({ option }) {
 			/>
 			<button
 				onClick={() => {
+					console.log(option.id);
 					removeOption(option.questionId, option.id);
 				}}
 				className=" font-bold text-white rounded-full px-2 bg-red-500"

@@ -5,11 +5,14 @@ import Register from "./pages/Register";
 import Builder from "./pages/Builder";
 import FormView from "./pages/FormView";
 import PrivateRouter from "./pages/PrivateRouter";
+import NotFound from "./pages/NotFound";
+import { Toaster } from "react-hot-toast";
 
 export default function RoutesProvider() {
 	return (
 		<Router>
 			<div className="w-full min-h-screen flex">
+				<Toaster />
 				<Routes>
 					<Route
 						path="*"
@@ -26,6 +29,7 @@ export default function RoutesProvider() {
 						}
 					/>
 					<Route path="/register" element={<Register />} />
+					<Route path="/404" element={<NotFound />} />
 				</Routes>
 			</div>
 		</Router>

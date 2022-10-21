@@ -5,7 +5,7 @@ import ShortInput from "./components/formComponents/ShortInput";
 
 // switch between questions selectiosn
 export const selectQuestion = (question, questionType) => {
-    console.log();
+	
 	switch (questionType) {
 		case "short-input":
 			return <ShortInput question={question} />;
@@ -19,4 +19,9 @@ export const selectQuestion = (question, questionType) => {
 		default:
 			return <ShortInput question={question} />;
 	}
+};
+
+// set Access Token
+export const setAccessToken = (token) => {
+	localStorage.setItem("accessToken", token);
 };

@@ -7,7 +7,7 @@ export const AppContext = createContext();
 // app context provider to wrap the app
 export const AppProvider = ({ children }) => {
 	const [questions, setQuestions] = useState([]);
-	const [form, setForm] = useState({ title: "", questions });
+	const [form, setForm] = useState({ "form-title": "", questions });
 
 	useEffect(() => {
 		setForm({ ...form, questions });
@@ -43,7 +43,7 @@ export const AppProvider = ({ children }) => {
 
 	// default question structure
 	const defaultQuestion = {
-		id: uuidv4(),
+		_id: uuidv4(),
 		"question-type": "short-input",
 		"question-title": "",
 		options: [],
@@ -57,7 +57,7 @@ export const AppProvider = ({ children }) => {
 	// update question title
 	const updateQuestionType = (questionId, type) => {
 		const updatedQuestions = questions.map((question) =>
-			question.id !== questionId
+			question._id !== questionId
 				? question
 				: { ...question, "question-type": type, options: [] }
 		);
@@ -67,7 +67,7 @@ export const AppProvider = ({ children }) => {
 	// update question type
 	const updateQuestionTitle = (questionId, title) => {
 		const updatedQuestions = questions.map((question) =>
-			question.id !== questionId
+			question._id !== questionId
 				? question
 				: { ...question, "question-title": title }
 		);
@@ -77,7 +77,7 @@ export const AppProvider = ({ children }) => {
 	// add options to question
 	const addOption = (questionId, option) => {
 		const updatedQuestions = questions.map((question) =>
-			question.id !== questionId
+			question._id !== questionId
 				? question
 				: { ...question, options: [...question.options, option] }
 		);
@@ -86,8 +86,9 @@ export const AppProvider = ({ children }) => {
 
 	// update Option
 	const updateOption = (questionId, updatedOption) => {
+		console.log(questionId, updatedOption);
 		const updatedQuestions = questions.map((question) =>
-			question.id !== questionId
+			question._id !== questionId
 				? question
 				: {
 						...question,
@@ -102,7 +103,7 @@ export const AppProvider = ({ children }) => {
 	// remove option from question
 	const removeOption = (questionId, optionId) => {
 		const updatedQuestions = questions.map((question) =>
-			question.id !== questionId
+			question._id !== questionId
 				? question
 				: {
 						...question,
@@ -117,7 +118,7 @@ export const AppProvider = ({ children }) => {
 	// update options placeholders
 	const updateOptionsPlaceholders = (questions, questionId) => {
 		const updatedQuestion = questions.map((question) =>
-			question.id !== questionId
+			question._id !== questionId
 				? question
 				: {
 						...question,
@@ -128,14 +129,13 @@ export const AppProvider = ({ children }) => {
 						}),
 				  }
 		);
-		console.log(updatedQuestion);
 		return updatedQuestion;
 	};
 
 	// remove question
 	const removeQuestion = (questionId) => {
 		const updatedQuestions = questions.filter(
-			(question) => question.id !== questionId
+			(question) => question._id !== questionId
 		);
 		setQuestions(updatedQuestions);
 	};
@@ -158,6 +158,7 @@ export const AppProvider = ({ children }) => {
 		updateQuestionType,
 		form,
 		updateFormTitle,
+		setForm,
 	};
 
 	// return children wrapped in the context provider

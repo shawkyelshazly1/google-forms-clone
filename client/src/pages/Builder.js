@@ -1,11 +1,39 @@
+import { useQuery } from "@tanstack/react-query";
 import React, { useContext } from "react";
+import { Navigate, useNavigate, useParams } from "react-router";
+import api from "../api";
 import { AppContext } from "../AppContext";
 
 import Nav from "../components/Nav";
 import QuestionContainer from "../components/QuestionContainer";
+import NotFound from "./NotFound";
 
 export default function Builder() {
-	const { questions, addQuestion } = useContext(AppContext);
+	const navigate = useNavigate();
+
+	const { id } = useParams();
+	const { questions, addQuestion, setForm, setQuestions } =
+		useContext(AppContext);
+
+	// Queries form
+	const { data, isLoading, error } = useQuery(
+		["edit-form"],
+		() => {
+			return api.get(`/form/${id}/edit`, {}).then((res) => {
+				return res.data;
+			});
+		},
+		{
+			onSuccess: (data) => {
+				setForm(data);
+				setQuestions(data.questions);
+			},
+			onError: (error) => {
+				navigate("/404");
+			},
+			retry: false,
+		}
+	);
 
 	return (
 		<div className="w-full min-h-screen flex flex-col items-center bg-red-300 pb-4 ">
@@ -20,7 +48,7 @@ export default function Builder() {
 					</button>
 					<div className="flex  flex-col gap-4 form-container items-center py-4 w-fit">
 						{questions.map((question) => (
-							<QuestionContainer key={question.id} question={question} />
+							<QuestionContainer key={question._id} question={question} />
 						))}
 					</div>
 				</div>

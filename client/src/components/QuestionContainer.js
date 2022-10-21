@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import Select from "react-select";
 import { AppContext } from "../AppContext";
-import { questionTypes } from "../constants";
+import { questionsMap, questionTypes } from "../constants";
 import { selectQuestion } from "../utils";
 
 export default function QuestionContainer({ question }) {
@@ -15,15 +15,14 @@ export default function QuestionContainer({ question }) {
 	);
 
 	// setting dropdown state
-	const [questionType, setquestionType] = useState({
-		value: "short-input",
-		label: "Short Input",
-	});
+	const [questionType, setquestionType] = useState(
+		questionsMap[question["question-type"]]
+	);
 
 	// question type change handler
 	const handleDropDownMenuChange = (selectedOption) => {
 		setquestionType(selectedOption);
-		updateQuestionType(question.id, selectedOption["value"]);
+		updateQuestionType(question._id, selectedOption.value);
 	};
 
 	// handle change title on input
@@ -40,13 +39,16 @@ export default function QuestionContainer({ question }) {
 					type="text"
 					onInput={handleTitleChange}
 					onBlur={() => {
-						updateQuestionTitle(question.id, questionTitle);
+						updateQuestionTitle(question._id, questionTitle);
 					}}
-					className="rounded-lg text-lg font-semibold py-2 min-h-[20px] px-4 w-[500px] overflow-auto bg-white focus:content"
+					onFocus={(e) => {
+						e.target.textContent = questionTitle;
+					}}
+					className="focus:outline-none rounded-lg text-lg font-semibold py-2 min-h-[20px] px-4 w-[500px] overflow-auto bg-white focus:content"
 				/>
 
 				<div className="mt-4 w-full">
-					{selectQuestion(question, questionType["value"])}
+					{selectQuestion(question, questionType.value)}
 				</div>
 			</div>
 			<div className="flex flex-col justify-between items-center gap-4 ">
@@ -57,7 +59,7 @@ export default function QuestionContainer({ question }) {
 				/>
 				<button
 					onClick={() => {
-						removeQuestion(question.id);
+						removeQuestion(question._id);
 					}}
 					className="bg-red-400 w-fit py-2 px-4 rounded-lg text-sm text-white font-semibold"
 				>
