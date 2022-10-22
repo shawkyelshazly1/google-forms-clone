@@ -9,6 +9,34 @@ export const AppContext = createContext();
 
 // app context provider to wrap the app
 export const AppProvider = ({ children }) => {
+	/*
+	form format:-
+		{
+		form-title:"",
+		questions:[]
+		}
+	*/
+
+	/*
+    question format:- 
+        {
+			id:""
+            question-type:"",
+            question-title:"",
+            options:[]    / only if checkboxes or radio buttons or a list
+        }
+    */
+
+	/*
+	option format:-
+		{
+			questionId="",
+			id="",
+			title=""
+			placeholder=""
+		}
+	*/
+
 	// Access the client
 	const queryClient = useQueryClient();
 
@@ -20,7 +48,17 @@ export const AppProvider = ({ children }) => {
 		"form-secondary-title": "",
 	});
 
+	const [formResponsesData, setFormResponsesData] = useState({
+		responses: [],
+		formResponsesStats: {},
+	});
+
 	const [formResponse, setformResponse] = useState({ formId: "", answers: [] });
+
+	// get question title & type
+	const getQuestionDetails = (questionId) => {
+		return form.questions.find((question) => question._id === questionId);
+	};
 
 	// set form response Id
 	const setformResponseId = (formId) => {
@@ -59,34 +97,6 @@ export const AppProvider = ({ children }) => {
 			answers: updatedAnswers,
 		});
 	};
-
-	/*
-	form format:-
-		{
-		form-title:"",
-		questions:[]
-		}
-	*/
-
-	/*
-    question format:- 
-        {
-			id:""
-            question-type:"",
-            question-title:"",
-            options:[]    / only if checkboxes or radio buttons or a list
-        }
-    */
-
-	/*
-	option format:-
-		{
-			questionId="",
-			id="",
-			title=""
-			placeholder=""
-		}
-	*/
 
 	// default question structure
 	const defaultQuestion = {
@@ -296,6 +306,9 @@ export const AppProvider = ({ children }) => {
 		setformResponseId,
 		setformResponse,
 		formResponse,
+		setFormResponsesData,
+		formResponsesData,
+		getQuestionDetails,
 	};
 
 	// return children wrapped in the context provider

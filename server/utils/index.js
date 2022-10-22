@@ -1,6 +1,8 @@
 const bcryptjs = require("bcryptjs"),
 	jwt = require("jsonwebtoken");
 
+const { Parser } = require("json2csv");
+
 // hash password
 exports.hashPassword = async (password) => {
 	const hashedPassword = await bcryptjs.hash(password, 10);
@@ -40,4 +42,13 @@ module.exports.validateAccessToken = async (req) => {
 		return true;
 	}
 	return false;
+};
+
+// dowload dada
+module.exports.downloadData = (res, fileName, fields, data) => {
+	const json2csv = new Parser({ fields });
+	const csv = json2csv.parse(data);
+	res.header("Content-Type", "text/csv");
+	res.attachment(fileName);
+	return res.send(csv);
 };

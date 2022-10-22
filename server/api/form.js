@@ -1,4 +1,5 @@
 const { FormService, FormResponseService } = require("../services");
+const { downloadData } = require("../utils");
 const userAuth = require("./middlewares/auth");
 
 module.exports = (app) => {
@@ -115,10 +116,25 @@ module.exports = (app) => {
 		const { id } = req.params;
 
 		const data = await formResponseService.getFormResponses(_id, id);
-
 		if (data.error) {
 			return res.status(409).json({ error: data.error });
 		}
 		return res.status(200).json(data.data);
+	});
+
+	// extract responses as CSV
+	// load form responses
+	app.get("/form/:id/responses/download", userAuth, async (req, res, next) => {
+		const { _id } = req.user;
+		const { id } = req.params;
+
+		const data = await formResponseService.getFormResponses(_id, id);
+		if (data.error) {
+			return res.status(409).json({ error: data.error });
+		}
+
+		const fields = [{ label: "Answers", value: "answers" }];
+
+		return downloadData(res, "responses.csv", fields, data.data.responses);
 	});
 };

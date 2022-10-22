@@ -9,13 +9,14 @@ import api from "../api";
 import toast from "react-hot-toast";
 import FormColorChanger from "./FormColorChanger";
 import { colorPallete } from "../constants";
-export default function Nav({ setShowModal }) {
+import numeral from "numeral";
+export default function Nav({ setShowModal, setSelectedPage }) {
 	// Access the client
 	const queryClient = useQueryClient();
 
 	const navigate = useNavigate();
 
-	const { form, updateFormTitle } = useContext(AppContext);
+	const { form, updateFormTitle, formResponsesData } = useContext(AppContext);
 	// title state
 	const [questionTitle, setQuestionTitle] = useState(form["form-title"]);
 
@@ -117,13 +118,13 @@ export default function Nav({ setShowModal }) {
 			</div>
 			<div className="flex flex-row  w-full gap-4 items-center justify-center font-semibold">
 				<button
-					onClick={() => {
-						console.log(form);
-					}}
 					style={{
 						borderBottomColor: `${colorPallete[form["form-color"]].main}`,
 					}}
 					className="border-b-4 px-2    pt-2"
+					onClick={() => {
+						setSelectedPage("builder");
+					}}
 				>
 					Questions
 				</button>
@@ -131,15 +132,29 @@ export default function Nav({ setShowModal }) {
 					style={{
 						borderBottomColor: `${colorPallete[form["form-color"]].main}`,
 					}}
-					className="border-b-4 px-2     pt-2"
+					className="border-b-4 px-2  flex flex-row items-center gap-2  pt-2"
+					onClick={() => {
+						setSelectedPage("responses");
+					}}
 				>
 					Responses
+					<span
+						className="rounded-full mb-[2px] text-white px-2 font-bold"
+						style={{
+							backgroundColor: `${colorPallete[form["form-color"]].main}`,
+						}}
+					>
+						{numeral(formResponsesData.responses.length).format("0a")}
+					</span>
 				</button>
 				<button
 					style={{
 						borderBottomColor: `${colorPallete[form["form-color"]].main}`,
 					}}
 					className="border-b-4 px-2     pt-2"
+					onClick={() => {
+						setSelectedPage("settings");
+					}}
 				>
 					Settings
 				</button>

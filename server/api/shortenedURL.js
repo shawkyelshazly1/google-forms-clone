@@ -19,10 +19,10 @@ module.exports = (app) => {
 	// direct to original url
 	app.get("/url/:id", async (req, res, next) => {
 		const { id } = req.params;
-		console.log(id);
+
 		const data = await service.getOriginalURL(id);
 		if (data.error) {
-			console.log(data.error);
+			console.error(data.error);
 			return res.redirect("http://localhost:3000/404");
 		}
 		res.redirect(data.data.originalURL);

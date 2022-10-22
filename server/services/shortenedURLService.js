@@ -20,7 +20,7 @@ class ShortenedURLService {
 				originalURL,
 				shortenedURL: ids.generate(),
 			};
-			console.log(data);
+	
 			const newURL = await this.repository.CreateShortenedURL(data);
 			return { data: newURL };
 		} catch (error) {

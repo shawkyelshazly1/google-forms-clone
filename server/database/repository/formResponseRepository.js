@@ -23,6 +23,58 @@ class FormResponseRepository {
 			return { error: "Something Went Wrong!" };
 		}
 	}
+
+	// get form response Stats
+	async GetFormResponsesStats(formId) {
+		try {
+			const formResponses = await FormResponseModel.aggregate([
+				{ $match: { formId: formId } },
+				{
+					$unwind: "$answers",
+				},
+				{
+					$replaceRoot: {
+						newRoot: "$answers",
+					},
+				},
+				{
+					$project: {
+						_id: 0,
+					},
+				},
+				{
+					$group: {
+						_id: {
+							questionId: "$questionId",
+							answer: "$answer",
+						},
+						answerResponses: {
+							$sum: 1,
+						},
+					},
+				},
+				{
+					$group: {
+						_id: "$_id.questionId",
+						responses: {
+							$sum: "$answerResponses",
+						},
+						answers: {
+							$push: {
+								answer: "$_id.answer",
+								responses: "$answerResponses",
+							},
+						},
+					},
+				},
+			]);
+
+			return formResponses;
+		} catch (error) {
+			console.error(error);
+			return { error: "Something Went Wrong!" };
+		}
+	}
 }
 
 module.exports = FormResponseRepository;

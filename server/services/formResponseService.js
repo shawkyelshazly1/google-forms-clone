@@ -32,7 +32,10 @@ class FormResponseService {
 			}
 
 			const formResponses = await this.repository.GetFormResponses(formId);
-			return { data: formResponses };
+			const formResponsesStats = await this.repository.GetFormResponsesStats(
+				formId
+			);
+			return { data: { responses: formResponses, formResponsesStats } };
 		} catch (error) {
 			console.error(error);
 			return { error: "Something Went Wrong!" };
