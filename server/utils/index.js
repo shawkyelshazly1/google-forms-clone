@@ -14,6 +14,20 @@ module.exports.generateAccessToken = async (payload) => {
 	});
 };
 
+// genereate token
+module.exports.generateToken = async (data) => {
+	return jwt.sign(data.toJSON(), process.env.APP_SECRET);
+};
+//validate token
+module.exports.validateToken = async (token) => {
+	try {
+		const payload = await jwt.verify(token, process.env.APP_SECRET);
+		return payload;
+	} catch (error) {
+		return false;
+	}
+};
+
 // validate access token
 module.exports.validateAccessToken = async (req) => {
 	const token = req.get("authorization");

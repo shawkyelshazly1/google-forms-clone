@@ -1,23 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext } from "react";
-import { Navigate, useNavigate, useParams } from "react-router";
+import React, { useContext, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import api from "../api";
 import { AppContext } from "../AppContext";
 import HeaderComponent from "../components/formComponents/HeaderComponent";
-
 import Nav from "../components/Nav";
 import QuestionContainer from "../components/QuestionContainer";
+import ShareLinkModal from "../components/ShareLinkModal";
 import { colorPallete } from "../constants";
-import NotFound from "./NotFound";
 
 export default function Builder() {
 	const navigate = useNavigate();
 
 	const { id } = useParams();
 	const { addQuestion, setForm, form } = useContext(AppContext);
+	const [showModal, setShowModal] = useState(true);
 
 	// Queries form
-	const { data, isLoading, error } = useQuery(
+	const { data } = useQuery(
 		["edit-form"],
 		() => {
 			return api.get(`/form/${id}/edit`, {}).then((res) => {
@@ -41,8 +41,8 @@ export default function Builder() {
 			className="w-full min-h-screen flex flex-col items-center  pb-4 "
 			style={{ backgroundColor: `${colorPallete[form["form-color"]].bg}` }}
 		>
-			<Nav />
-
+			<Nav setShowModal={setShowModal} />
+			<ShareLinkModal showModal={showModal} setShowModal={setShowModal} />
 			<div className="pt-24 w-full ">
 				<div className="flex flex-col-reverse  items-center w-full h-full">
 					<button

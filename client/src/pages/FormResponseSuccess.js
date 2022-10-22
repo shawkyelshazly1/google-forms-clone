@@ -9,11 +9,7 @@ export default function FormResponseSuccess() {
 	const navigate = useNavigate();
 
 	// Queries form
-	const {
-		data: form,
-		isLoading,
-		error,
-	} = useQuery(
+	const { data: form, isLoading } = useQuery(
 		["view-form"],
 		() => {
 			return api.get(`/form/${id}/view`, {}).then((res) => {
@@ -21,8 +17,8 @@ export default function FormResponseSuccess() {
 			});
 		},
 		{
-			onSuccess: (data) => {},
-			onError: (error) => {
+			onSuccess: (_) => {},
+			onError: (_) => {
 				navigate("/404");
 			},
 			retry: false,

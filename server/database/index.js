@@ -3,4 +3,5 @@ module.exports = {
 	UserRepository: require("./repository/userRepository"),
 	FormRepository: require("./repository/formRepository"),
 	FormResponseRepository: require("./repository/formResponseRepository"),
+	ShortenedURLRepository: require("./repository/shortenedURLRepository"),
 };

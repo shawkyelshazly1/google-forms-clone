@@ -1,7 +1,7 @@
 const express = require("express"),
 	cors = require("cors"),
 	{ initDatabaseConnection } = require("./database"),
-	{ UserAPI, FormAPI } = require("./api");
+	{ UserAPI, FormAPI, ShortenedURLAPI } = require("./api");
 
 require("dotenv").config();
 
@@ -18,6 +18,7 @@ initDatabaseConnection();
 // register service routes
 UserAPI(app);
 FormAPI(app);
+ShortenedURLAPI(app);
 
 // start sever
 app.listen(process.env.PORT || 5000, () => {

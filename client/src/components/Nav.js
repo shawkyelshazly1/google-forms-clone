@@ -9,7 +9,7 @@ import api from "../api";
 import toast from "react-hot-toast";
 import FormColorChanger from "./FormColorChanger";
 import { colorPallete } from "../constants";
-export default function Nav() {
+export default function Nav({ setShowModal }) {
 	// Access the client
 	const queryClient = useQueryClient();
 
@@ -58,7 +58,7 @@ export default function Nav() {
 	);
 
 	return (
-		<div className="flex w-full  flex-col px-4 bg-white pt-2 fixed z-50 top-0 overflow-hidden min-h-[50px]">
+		<div className="flex w-full  flex-col px-4 bg-white pt-2 fixed z-30 top-0 overflow-hidden min-h-[50px]">
 			<div className="flex flex-row w-full items-center justify-between">
 				<div className="flex flex-row items-center gap-2">
 					<Link to={"/"}>
@@ -107,7 +107,9 @@ export default function Nav() {
 					/>
 					<button
 						className="text-lg font-semibold bg-[#90CAF9] text-white py-1 px-4 rounded-lg"
-						onClick={() => {}}
+						onClick={() => {
+							setShowModal(true);
+						}}
 					>
 						Send
 					</button>

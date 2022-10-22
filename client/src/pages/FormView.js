@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import api from "../api";
 import { AppContext } from "../AppContext";
@@ -20,7 +20,7 @@ export default function FormView() {
 	const {
 		data: form,
 		isLoading,
-		error,
+		
 	} = useQuery(
 		["view-form"],
 		() => {

@@ -1,4 +1,4 @@
-import { useQueryClient } from "@tanstack/react-query";
+
 import React, { useContext, useState } from "react";
 
 import Select from "react-select";
@@ -12,8 +12,7 @@ export default function QuestionContainer({ question }) {
 	const { removeQuestion, updateQuestionTitle, updateQuestionType, form } =
 		useContext(AppContext);
 
-	// Access the client
-	const queryClient = useQueryClient();
+
 
 	// title state
 	const [questionTitle, setQuestionTitle] = useState(
