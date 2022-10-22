@@ -14,7 +14,7 @@ export default function Builder() {
 
 	const { id } = useParams();
 	const { addQuestion, setForm, form } = useContext(AppContext);
-	const [showModal, setShowModal] = useState(true);
+	const [showModal, setShowModal] = useState(false);
 
 	// Queries form
 	const { data } = useQuery(

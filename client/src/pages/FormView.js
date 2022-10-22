@@ -17,11 +17,7 @@ export default function FormView() {
 	}, []);
 
 	// Queries form
-	const {
-		data: form,
-		isLoading,
-		
-	} = useQuery(
+	const { data: form, isLoading } = useQuery(
 		["view-form"],
 		() => {
 			return api.get(`/form/${id}/view`, {}).then((res) => {
@@ -43,8 +39,14 @@ export default function FormView() {
 	// handle submitting form response
 	const handleFormSubmittion = (e) => {
 		e.preventDefault();
-		console.log(formResponse);
-		navigate(`/${id}/formResponse`);
+		api
+			.post(`/form/${form._id}/response`, { formResponseData: formResponse })
+			.then((res) => {
+				navigate(`/${id}/formResponse`);
+			})
+			.catch((error) => {
+				navigate(`/404`);
+			});
 	};
 
 	if (isLoading) return <>Loading...</>;
@@ -65,7 +67,7 @@ export default function FormView() {
 					</div>
 					<div className="flex flex-col gap-4 py-4 px-6">
 						<h1 className="font-semibold text-black text-4xl">
-							{!form["form-secondary-title"] === "" ? (
+							{form["form-secondary-title"] !== "" ? (
 								form["form-secondary-title"]
 							) : (
 								<>
