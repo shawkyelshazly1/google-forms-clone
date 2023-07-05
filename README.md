@@ -41,7 +41,7 @@
     <a href="https://github.com/shawkyelshazly1/google-forms-clone"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="#" >View Demo</a>
+    <a href="https://docs4u.onrender.com" >View Demo</a>
     ·
     <a href="https://github.com/shawkyelshazly1/google-forms-clone/issues">Report Bug</a>
     ·
