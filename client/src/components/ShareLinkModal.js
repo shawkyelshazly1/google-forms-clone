@@ -12,7 +12,11 @@ export default function ShareLinkModal({ setShowModal, showModal }) {
 	useEffect(() => {
 		api
 			.post("/url/create", {
-				originalURL: `http://localhost:3000/${id}/view`,
+				originalURL: `${
+					process.env.REACT_APP_NODE_ENV === "development"
+						? "http://localhost:3000"
+						: "https://docs4u.onrender.com"
+				}/${id}/view`,
 			})
 			.then((res) => {
 				setShortenURL(res.data.shortenedURL);
@@ -55,12 +59,22 @@ export default function ShareLinkModal({ setShowModal, showModal }) {
 				<div className="flex flex-col gap-2">
 					<h3 className="text-lg font-semibold">Original URL</h3>
 					<p className="text-[16px] border-b-2 flex flex-row justify-between items-center py-2">
-						{`http://localhost:3000/${id}/view`}
+						{`${
+							process.env.REACT_APP_NODE_ENV === "development"
+								? "http://localhost:3000"
+								: "https://docs4u.onrender.com"
+						}/${id}/view`}
 						<MdContentCopy
 							size={"1.5em"}
 							className="cursor-pointer"
 							onClick={() => {
-								copyToClipboard(`http://localhost:3000/${id}/view`);
+								copyToClipboard(
+									`${
+										process.env.REACT_APP_NODE_ENV === "development"
+											? "http://localhost:3000"
+											: "https://docs4u.onrender.com"
+									}/${id}/view`
+								);
 							}}
 						/>
 					</p>
@@ -68,12 +82,22 @@ export default function ShareLinkModal({ setShowModal, showModal }) {
 				<div className="flex flex-col gap-2">
 					<h3 className="text-lg font-semibold">Shorten URL</h3>
 					<p className="text-[16px] border-b-2 flex flex-row justify-between items-center py-2">
-						{`localhost:5000/url/${shortenURL}`}
+						{`${
+							process.env.REACT_APP_NODE_ENV === "development"
+								? "http://localhost:5000"
+								: "https://docs4u-api.onrender.com"
+						}/url/${shortenURL}`}
 						<MdContentCopy
 							size={"1.5em"}
 							className="cursor-pointer"
 							onClick={() => {
-								copyToClipboard(`localhost:5000/url/${shortenURL}`);
+								copyToClipboard(
+									`${
+										process.env.REACT_APP_NODE_ENV === "development"
+											? "http://localhost:5000"
+											: "https://docs4u-api.onrender.com"
+									}/url/${shortenURL}`
+								);
 							}}
 						/>
 					</p>
