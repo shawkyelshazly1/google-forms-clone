@@ -23,13 +23,7 @@ module.exports = (app) => {
 		const data = await service.getOriginalURL(id);
 		if (data.error) {
 			console.error(data.error);
-			return res.redirect(
-				`${
-					process.env.REACT_APP_NODE_ENV === "development"
-						? "http://localhost:3000"
-						: "https://docs4u.onrender.com"
-				}/404`
-			);
+			return res.redirect(`${process.env.APP_URL}/404`);
 		}
 		res.redirect(data.data.originalURL);
 	});

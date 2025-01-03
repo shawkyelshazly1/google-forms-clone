@@ -25,13 +25,19 @@ export const CurrentUserProvider = ({ children }) => {
 		setAuthLoading(true);
 
 		if (token && token !== "") {
-			api.get("/user/auth", {}).then((res) => {
-				const user = res.data;
-				setAuthLoading(false);
-				if (user) {
-					setCurrentUser(user);
-				}
-			});
+			api
+				.get("/user/auth", {})
+				.then((res) => {
+					const user = res.data;
+					setAuthLoading(false);
+					if (user) {
+						setCurrentUser(user);
+					}
+				})
+				.catch((error) => {
+					setAuthLoading(false);
+					setCurrentUser(null);
+				});
 		} else {
 			setAuthLoading(false);
 			setCurrentUser(null);

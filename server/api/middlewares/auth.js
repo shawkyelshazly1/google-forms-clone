@@ -7,8 +7,8 @@ module.exports = async (req, res, next) => {
 		if (isAuthenticated) {
 			return next();
 		}
-		return res.status(403).json({ error: "Not Authorized!" });
+		return res.status(401).json({ error: "Not Authorized!" });
 	} catch (error) {
-		return res.status(403).json({ error: "Not Authorized!" });
+		return res.status(401).json({ error: "Not Authorized!" });
 	}
 };
